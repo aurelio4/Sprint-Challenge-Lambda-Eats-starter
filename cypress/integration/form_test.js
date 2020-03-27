@@ -1,0 +1,21 @@
+describe("Testing pizza form", function() {
+  beforeEach(function() {
+    cy.visit("http://localhost:3000")
+  })
+  it("Add test to inputs and submit form", function() {
+    cy.get("button[name='order-btn']").click()
+    cy.get("input[name='name']")
+      .type("Testing")
+      .should("have.length", 1)
+    cy.get("input[name='pepperoni']")
+      .click({force: true})
+      .should('be.checked')
+    cy.get("input[name='olives']")
+      .click({force: true})
+      .should('be.checked')
+    cy.get("input[name='chicken']")
+      .click({force: true})
+      .should('be.checked')
+    cy.get("button[name='add-to-order']").click()
+  })
+})

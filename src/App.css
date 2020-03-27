@@ -2,37 +2,49 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.btn-wide {
+  margin-right: 10px;
+  width: 15%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.btn-md-width {
+  width: 10%;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.checkout-btn {
+  width: 60%;
 }
 
-.App-link {
-  color: #61dafb;
+.dropdown-menu {
+  
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.color-red {
+  color: red;
+}
+
+.modal-header-override {
+  display: block;
+  text-align: center;
+}
+
+.carousel-div {
+  height: 35vh;
+  width: 100vw;
+  text-align: center;
+  padding: 10vh 0 0 0;
+  background-image: url(./Assets/Pizza.jpg);
+}
+
+.carousel-div h1 {
+  margin-bottom: 3.5vh;
+}
+
+.restaurantcard-div {
+  padding: 0 4vw 0 4vw
+}
+
+.border-override {
+  margin-top: 1vh;
+  border: none;
 }
