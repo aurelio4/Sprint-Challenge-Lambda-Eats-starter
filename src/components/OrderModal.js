@@ -19,7 +19,6 @@ import {
   DropdownItem
 } from 'reactstrap'
 
-
 function roundToTwo(num) {    
   return +(Math.round(num + "e+2")  + "e-2");
 }
@@ -33,7 +32,8 @@ function OrderModal({ location }) {
   const [pizzaSize, setPizzaSize] = useState(12)
   const [sauce, setSauce] = useState('')
   const [instructions, setInstructions] = useState('')
-  const toppings = []
+  const [isGlutenFree, setGlutenFree] = useState(false)
+  const [toppings, setToppings] = useState([])
 
   const toggle = () => setDropdown(!dropdown)
 
@@ -58,10 +58,10 @@ function OrderModal({ location }) {
                 <Badge color="danger">Required</Badge>
               </FormGroup>
               <FormGroup>
-                <Input type="select" name="pizza-size">
-                  <option onClick={() => setPizzaSize(12)}>Small (12")</option>
-                  <option onClick={() => setPizzaSize(14)}>Medium (14")</option>
-                  <option onClick={() => setPizzaSize(16)}>Large (16")</option>
+                <Input type="select" name="pizza-size" onChange={(e) => {setPizzaSize(e.target.value)}}>
+                  <option value="12">Small (12")</option>
+                  <option value="14">Medium (14")</option>
+                  <option value="16">Large (16")</option>
                 </Input>
               </FormGroup>
 
@@ -104,14 +104,12 @@ function OrderModal({ location }) {
                 <Badge color="primary">Choose up to 10</Badge>
               </FormGroup>
               <FormGroup>
-                <div>
-                  <CustomInput type="checkbox" id="topping1" label="Pepperoni" onChange={(e) => e.target.checked ? toppings.push('Pepperoni') : toppings.splice(toppings.indexOf('Pepperoni'), 1)} />
-                  <CustomInput type="checkbox" id="topping2" label="Sausage" onChange={(e) => e.target.checked ? toppings.push('Sausage') : toppings.splice(toppings.indexOf('Sausage'), 1)} />
-                  <CustomInput type="checkbox" id="topping3" label="Black Olives" onChange={(e) => e.target.checked ? toppings.push('Black Olives') : toppings.splice(toppings.indexOf('Black Olives'), 1)} />
-                  <CustomInput type="checkbox" id="topping4" label="Bacon" onChange={(e) => e.target.checked ? toppings.push('Bacon') : toppings.splice(toppings.indexOf('Bacon'), 1)} />
-                  <CustomInput type="checkbox" id="topping5" label="Ham" onChange={(e) => e.target.checked ? toppings.push('Ham') : toppings.splice(toppings.indexOf('Ham'), 1)} />
-                  <CustomInput type="checkbox" id="topping6" label="Chicken" onChange={(e) => e.target.checked ? toppings.push('Chicken') : toppings.splice(toppings.indexOf('Chicken'), 1)} />
-                </div>
+                  <CustomInput type="checkbox" name="pepperoni" id="topping1" label="Pepperoni" onChange={() => setToppings([...toppings, 'Pepperoni'])} />
+                  <CustomInput type="checkbox" name="sausage" id="topping2" label="Sausage" onChange={() => setToppings([...toppings, 'Sausage'])} />
+                  <CustomInput type="checkbox" name="olives" id="topping3" label="Black Olives" onChange={() => setToppings([...toppings,'Black Olives'])} />
+                  <CustomInput type="checkbox" name="bacon" id="topping4" label="Bacon" onChange={() => setToppings([...toppings,'Bacon'])} />
+                  <CustomInput type="checkbox" name="ham" id="topping5" label="Ham" onChange={() => setToppings([...toppings,'Ham'])}/>
+                  <CustomInput type="checkbox" name="chicken" id="topping6" label="Chicken" onChange={() => setToppings([...toppings,'Chicken'])} />
               </FormGroup>
 
               {/* gluten free crust substitute */}
@@ -120,7 +118,7 @@ function OrderModal({ location }) {
                 <Badge color="primary">Choose up to 1</Badge>
               </FormGroup>
               <FormGroup>
-                <CustomInput type="switch" id="glutenFreeCrust" name="glutenFreeCrust" label="Gluten Free Crust (+$1.00)" onChange={(e) => e.target.checked ? setPrice(price + 1.00) : setPrice(price - 1.00)} />
+                <CustomInput type="switch" id="glutenFreeCrust" name="glutenFreeCrust" label="Gluten Free Crust (+$1.00)" onChange={(e) => e.target.checked ? (setPrice(price + 1.00), setGlutenFree(true)): (setPrice(price - 1.00), setGlutenFree(false))} />
               </FormGroup>
 
               {/* special instructions */}
@@ -151,10 +149,8 @@ function OrderModal({ location }) {
             <DropdownItem onClick={() => setQuantity(10)}>10 {'($'}{roundToTwo(price*10)}{')'}</DropdownItem>
           </DropdownMenu>
         </Dropdown>
-          <Link to={{pathname: "/pizza/complete", state:{modal: true}}}><Button color="success">Add to Order</Button></Link>
-          <Route path="/pizza/complete" >
-            <OrderCompleteModal />
-          </Route>
+          <Link to={{pathname: "/pizza/complete", state:{modal: true, name: name, pizzaSize: pizzaSize, sauce: sauce, instructions: instructions, toppings: [...toppings], isGlutenFree: isGlutenFree}}}><Button name="add-to-order" color="success">Add to Order</Button></Link>
+          <Route path="/pizza/complete" component={OrderCompleteModal} />
           <Link to="/"><Button color="danger">Close</Button></Link>
         </ModalFooter>
       </Modal>
